@@ -29,6 +29,14 @@ def transform(image_bytes):
     return my_transforms(image).unsqueeze(0)
 
 
+def get_prediction(image_bytes):
+    tensor = transform(image_bytes=image_bytes)
+    outputs = model.forward(tensor)
+    _, y_hat = outputs.max(1)
+    predicted_idx = str(y_hat.item())
+    return imagenet_class_index[predicted_idx]
+
+
 @app.route("/")
 def hello():
     return "Hello World"
